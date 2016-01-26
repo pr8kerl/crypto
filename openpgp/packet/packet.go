@@ -4,15 +4,16 @@
 
 // Package packet implements parsing and serialization of OpenPGP packets, as
 // specified in RFC 4880.
-package packet // import "golang.org/x/crypto/openpgp/packet"
+package packet // import "github.com/pr8kerl/crypto/openpgp/packet"
 
 import (
 	"bufio"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/des"
-	"golang.org/x/crypto/cast5"
-	"golang.org/x/crypto/openpgp/errors"
+	"fmt"
+	"github.com/pr8kerl/crypto/cast5"
+	"github.com/pr8kerl/crypto/openpgp/errors"
 	"io"
 	"math/big"
 )
@@ -164,8 +165,9 @@ func readHeader(r io.Reader) (tag packetType, length int64, contents io.Reader, 
 		return
 	}
 	if buf[0]&0x80 == 0 {
-		err = errors.StructuralError("tag byte does not have MSB set")
-		return
+		//		err = errors.StructuralError("tag byte does not have MSB set")
+		fmt.Printf("tag byte does not have MSB set - ignoring\n")
+		//		return
 	}
 	if buf[0]&0x40 == 0 {
 		// Old format packet
